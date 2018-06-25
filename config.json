@@ -1,0 +1,6 @@
+{
+    "StreamSrc": "ProvideLinkToStream",
+    "CameraMakeAndModel": "ProvideCameraMakeAndModel",
+    "CalibrationPhotoDir": "None",
+    "Mode": "[1 or 2]"
+}
