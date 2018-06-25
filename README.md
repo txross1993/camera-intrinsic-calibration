@@ -7,7 +7,7 @@
     	"Mode": "[1 or 2]"
 	}```
 
-**StreamSrc**: The source of the stream. Typically 0, 1, or an rtsp link. 0 or 1 refers to the port on your local device for a pibcam or usb integrated camera device. The rtsp format is ```rtsp://<username>:<password>@<host>:<port>```. Port is optional.
+**StreamSrc**: The source of the stream. Typically 0, 1, or an rtsp link. 0 or 1 refers to the port on your local device for a pibcam or usb integrated camera device. The rtsp format is ```rtsp://<username>:<password>@<uri>```. 
 
 **CameraMakeAndModel**: Provide a unique make and model for the camera you're calibrating. The idea is for any one camera type, there should only be one calibration unless we install cameras with different focal lengths. If so, provide some uniqueness here such as *Bosch600VR_wide* or *AxisQ3151_longFocal*, etc.
 
