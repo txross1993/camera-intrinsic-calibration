@@ -34,7 +34,7 @@ class Calibrator(object):
         for fname in images:
             img = cv2.imread(fname)
             gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
-            gray.shape[::-1]
+            shape = gray.shape[::-1]
 
             # Find the chess board corners
             ret, corners = cv2.findChessboardCorners(gray, (6,9),None)

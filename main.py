@@ -56,7 +56,7 @@ def getCalibrationPhotoDir(cameraMakeModel, providedCalibrationPhotoDir=None):
     return calibrationPhotoDir
 
 def getCalibrationFileLocation(cameraMakeModel):
-    calibrationDir = os.path.abspath("../data/calibrationFiles")
+    calibrationDir = os.path.abspath("data/calibrationFiles")
     filename = "{}.calibration.file".format(cameraMakeModel)
     calibrationFile = os.path.join(calibrationDir, filename)
     return calibrationFile
