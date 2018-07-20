@@ -17,3 +17,5 @@
 **Mode 1**: Collect images. Use this mode to start a video stream to your stream source, and press "g" to save the images to the specified CalibrationPhotoDir.
 
 **Mode 2**: Run calibration. Output pickeled calibration file will be located at data/calibration-files/<CameraMakeAndModel>.calibration.file.
+
+**Mode 3**: Test calibration undistortion output. Provide the path to the image you want to test the undistortion on in ImageComparisonPath and the name of the calibration file located in /data/calibrationFiles.
