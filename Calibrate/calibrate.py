@@ -38,19 +38,20 @@ class Calibrator(object):
             shape = gray.shape[::-1]
 
             # Find the chess board corners
-            ret, corners = cv2.findCirclesGrid(gray, self.calibrationPatternSize, None, flags='CALIB_CB_ASYMMETRIC_GRID' )
+            ret, cirlces = cv2.findCirclesGrid(gray, self.calibrationPatternSize, flags=cv2.CALIB_CB_ASYMMETRIC_GRID )
 
             # If found, add object points, image points (after refining them)
             if ret == True:
                 objpoints.append(objp)
 
-                corners2 = cv2.cornerSubPix(gray,corners,(5,5),(-1,-1),criteria)
-                imgpoints.append(corners2)
+                #corners2 = cv2.cornerSubPix(gray,cirlces,(5,5),(-1,-1),criteria)
+                imgpoints.append(cirlces)
 
                 # Draw and display the corners
-                img = cv2.drawChessboardCorners(img, self.calibrationPatternSize, corners2,ret)
+                img = cv2.drawChessboardCorners(img, self.calibrationPatternSize, cirlces, ret)
                 cv2.imshow('img',img)
-                cv2.waitKey(500)
+                if cv2.waitKey(1) & 0xFF == ord('q'):
+                    cv2.destroyAllWindows()
 
         try:
             ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(objpoints, imgpoints, shape, None,None)

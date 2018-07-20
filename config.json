@@ -3,5 +3,7 @@
     "CameraMakeAndModel": "logi",
     "CalibrationPhotoDir": "None",
     "CalibrationPatternSize": "(4,11)",
-    "Mode": "1"
+    "Mode": "3",
+    "CalibrationFile": "logi.calibration.file",
+    "ImageComparisonPath": "data/calibrationPictures/logi/chessboard_15.jpeg"
 }

@@ -8,6 +8,8 @@ import os, sys, json
 from Calibrate.capture10Frames import PressGToCaptureFrame
 from Calibrate.calibrate import Calibrator
 
+from TestUndistortion.CompareImages import ImageComparison
+
 class ValidationError(Exception):
     pass
 
@@ -16,11 +18,12 @@ def parseJsonConfigFile(jsonConfigFile):
         data = json.loads(config.read())
         config.close()
 
-    if data['Mode'] not in ["1", "2"]:
+    if data['Mode'] not in ["1", "2", "3"]:
         argHelper = """
         Please specify either "1" or "2" as your mode of operation.
             Mode 1: Capture frames to calibrate from
             Mode 2: Calibrate on the captured frames
+            Mode 3: Test your calibration file on a sample image
         One would capture frames before calibration, else there are no photos to calibrate from!
         """
         logging.error(argHelper)
@@ -128,11 +131,19 @@ def getCalibrationPatternSizeTuple(calibrationPatternSize):
 
 def main():
     args = parse_args()
+
+    #Calibration Inputs
     CameraMakeAndModel = args['CameraMakeAndModel']
     CalibrationPatternSize = getCalibrationPatternSizeTuple(args['CalibrationPatternSize'])
     argCalibrationPhotoDir = None if args['CalibrationPhotoDir'].lower()=='none' else args['CalibrationPhotoDir']
     CalibrationPhotoDir = getCalibrationPhotoDir(CameraMakeAndModel, argCalibrationPhotoDir)
     CalibrationFilePath = getCalibrationFileLocation(CameraMakeAndModel)
+    
+    #Testing Calibration Inputs
+    CALIBRATION_FILE = args['CalibrationFile']
+    COMPARISON_IMAGE = args['ImageComparisonPath']
+
+
     echoArgs(args)
 
     if args['Mode'] == "1":
@@ -151,6 +162,10 @@ def main():
             logging.error("""Calibration file exists for file {}. 
             Please delete or move this file before attempting recalibration or else provide a different, unique CameraMakeAndModel.""".format(CalibrationFilePath))
             sys.exit(1)
+
+    elif args['Mode'] == "3":        
+        COMPARE = ImageComparison(CALIBRATION_FILE, COMPARISON_IMAGE)
+        COMPARE.showComparison()
     else:
         logging.warning("No valid mode provided. Please provide a mode of 1 (capture images) or 2 (calibrate camera)")
         sys.exit(0)    
