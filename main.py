@@ -1,4 +1,4 @@
-import cv2
+import cv2, re
 from time import sleep
 import keyboard
 import imutils
@@ -113,15 +113,23 @@ def captureFrames(streamSrc, calibrationPhotoDir):
             cv2.destroyAllWindows()
             break
 
-def calibrate(cameraMakeModel, calibrationFileName, calibrationPhotoDir):
-    Calibrator(cameraMakeModel, calibrationFileName, calibrationPhotoDir).calibrate()
+def calibrate(cameraMakeModel, calibrationFileName, calibrationPhotoDir, CalibrationPatternSize):
+    Calibrator(cameraMakeModel, calibrationFileName, calibrationPhotoDir, CalibrationPatternSize).calibrate()
 
 def echoArgs(args):
     logging.info(args)
 
+def getCalibrationPatternSizeTuple(calibrationPatternSize):
+    pattern = r'\d+'
+    calibrationPatternSizetoList = re.findall(pattern, calibrationPatternSize)
+    calibrationPatternSizetoInts = [int(a) for a in calibrationPatternSizetoList]
+    calibrationPatternSizeTuple = tuple(calibrationPatternSizetoInts,)
+    return calibrationPatternSizeTuple
+
 def main():
     args = parse_args()
     CameraMakeAndModel = args['CameraMakeAndModel']
+    CalibrationPatternSize = getCalibrationPatternSizeTuple(args['CalibrationPatternSize'])
     argCalibrationPhotoDir = None if args['CalibrationPhotoDir'].lower()=='none' else args['CalibrationPhotoDir']
     CalibrationPhotoDir = getCalibrationPhotoDir(CameraMakeAndModel, argCalibrationPhotoDir)
     CalibrationFilePath = getCalibrationFileLocation(CameraMakeAndModel)
@@ -138,7 +146,7 @@ def main():
         
     elif args['Mode'] == "2":
         if not checkForExistingCalibrationFile(CameraMakeAndModel):
-            calibrate(CameraMakeAndModel, CalibrationFilePath, CalibrationPhotoDir)
+            calibrate(CameraMakeAndModel, CalibrationFilePath, CalibrationPhotoDir, CalibrationPatternSize)
         else:
             logging.error("""Calibration file exists for file {}. 
             Please delete or move this file before attempting recalibration or else provide a different, unique CameraMakeAndModel.""".format(CalibrationFilePath))

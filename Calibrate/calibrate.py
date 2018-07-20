@@ -5,10 +5,11 @@ import pickle
 import logging
 
 class Calibrator(object):
-    def __init__(self, cameraMakeModel, calibrationFileName, calibrationPhotoDir):
+    def __init__(self, cameraMakeModel, calibrationFileName, calibrationPhotoDir, calibrationPatterSize:tuple):
         self.calibrationFileName = calibrationFileName
         self.calibrationPhotoDir = calibrationPhotoDir
         self.cameraMakeModel = cameraMakeModel
+        self.calibrationPatternSize = calibrationPatterSize
 
     def calibrate(self):
 
@@ -19,8 +20,8 @@ class Calibrator(object):
         criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
 
         # prepare object points, like (0,0,0), (1,0,0), (2,0,0) ....,(6,5,0)
-        objp = np.zeros((6*9,3), np.float32)
-        objp[:,:2] = np.mgrid[0:6,0:9].T.reshape(-1,2)
+        objp = np.zeros((self.calibrationPatternSize[0]*self.calibrationPatternSize[1],3), np.float32)
+        objp[:,:2] = np.mgrid[0:self.calibrationPatternSize[0],0:self.calibrationPatternSize[1]].T.reshape(-1,2)
 
         # Arrays to store object points and image points from all the images.
         objpoints = [] # 3d point in real world space
@@ -37,17 +38,17 @@ class Calibrator(object):
             shape = gray.shape[::-1]
 
             # Find the chess board corners
-            ret, corners = cv2.findChessboardCorners(gray, (6,9),None)
+            ret, corners = cv2.findCirclesGrid(gray, self.calibrationPatternSize, None, flags='CALIB_CB_ASYMMETRIC_GRID' )
 
             # If found, add object points, image points (after refining them)
             if ret == True:
                 objpoints.append(objp)
 
-                corners2 = cv2.cornerSubPix(gray,corners,(11,11),(-1,-1),criteria)
+                corners2 = cv2.cornerSubPix(gray,corners,(5,5),(-1,-1),criteria)
                 imgpoints.append(corners2)
 
                 # Draw and display the corners
-                img = cv2.drawChessboardCorners(img, (6,9), corners2,ret)
+                img = cv2.drawChessboardCorners(img, self.calibrationPatternSize, corners2,ret)
                 cv2.imshow('img',img)
                 cv2.waitKey(500)
 

@@ -1,6 +1,7 @@
 {
-    "StreamSrc": "rtsp://root:etech2018*$@10.19.1.61/axis-media/media.amp",
-    "CameraMakeAndModel": "axis.p3228-lv",
+    "StreamSrc": 1,
+    "CameraMakeAndModel": "logi",
     "CalibrationPhotoDir": "None",
-    "Mode": "2"
+    "CalibrationPatternSize": "(4,11)",
+    "Mode": "1"
 }
