@@ -1,4 +1,4 @@
-import cv2
+import cv2, re
 from time import sleep
 import keyboard
 import imutils
@@ -8,6 +8,8 @@ import os, sys, json
 from Calibrate.capture10Frames import PressGToCaptureFrame
 from Calibrate.calibrate import Calibrator
 
+from TestUndistortion.CompareImages import ImageComparison
+
 class ValidationError(Exception):
     pass
 
@@ -16,11 +18,12 @@ def parseJsonConfigFile(jsonConfigFile):
         data = json.loads(config.read())
         config.close()
 
-    if data['Mode'] not in ["1", "2"]:
+    if data['Mode'] not in ["1", "2", "3"]:
         argHelper = """
         Please specify either "1" or "2" as your mode of operation.
             Mode 1: Capture frames to calibrate from
             Mode 2: Calibrate on the captured frames
+            Mode 3: Test your calibration file on a sample image
         One would capture frames before calibration, else there are no photos to calibrate from!
         """
         logging.error(argHelper)
@@ -62,7 +65,7 @@ def getCalibrationFileLocation(cameraMakeModel):
     return calibrationFile
 
 
-def checkForExistingCalibrationPhotoDirs(cameraMakeModel):
+def makeDirIfNotExistingCalibrationPhotoDirs(cameraMakeModel):
     photoDir = getCalibrationPhotoDir(cameraMakeModel)
     if os.path.isdir(photoDir):
         return True
@@ -79,6 +82,7 @@ def checkForExistingCalibrationFile(cameraMakeModel):
 
 def captureFrames(streamSrc, calibrationPhotoDir):
     num_seconds = 1
+    was_pressed = False    
     frames_captured = 0
 
     font                   = cv2.FONT_HERSHEY_SIMPLEX
@@ -89,7 +93,7 @@ def captureFrames(streamSrc, calibrationPhotoDir):
     
     streamSrc = PressGToCaptureFrame(streamSrc, calibrationPhotoDir)
     cap = streamSrc.cap.start()
-
+    
     while True:
         frame = cap.read()
         
@@ -100,49 +104,70 @@ def captureFrames(streamSrc, calibrationPhotoDir):
             fontColor,
             lineType)
         
-        resized = imutils.resize(frame,width=640, height=480)
+        #resized = imutils.resize(frame,width=640, height=480)
 
-        cv2.imshow('VIDEO', resized)
+        cv2.imshow('VIDEO', frame)
+        key = cv2.waitKey(1) & 0xFF
         num_seconds += 1
         
         if keyboard.is_pressed('g'):
-            streamSrc.saveImg(frame, frames_captured)
-            frames_captured += 1        
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            cap.closeStream()
-            cv2.destroyAllWindows()
+            if not was_pressed:
+                frames_captured += 1
+                sleep(0.1)
+                streamSrc.saveImg(frame, frames_captured)                
+                was_pressed = True
+            else:
+                was_pressed = False        
+        if key == ord('q'):
             break
 
-def calibrate(cameraMakeModel, calibrationFileName, calibrationPhotoDir):
-    Calibrator(cameraMakeModel, calibrationFileName, calibrationPhotoDir).calibrate()
+    cap.closeStream()
+    cv2.destroyAllWindows()
+
+def calibrate(cameraMakeModel, calibrationFileName, calibrationPhotoDir, CalibrationPatternSize):
+    Calibrator(cameraMakeModel, calibrationFileName, calibrationPhotoDir, CalibrationPatternSize).calibrate()
 
 def echoArgs(args):
     logging.info(args)
 
+def getCalibrationPatternSizeTuple(calibrationPatternSize):
+    pattern = r'\d+'
+    calibrationPatternSizetoList = re.findall(pattern, calibrationPatternSize)
+    calibrationPatternSizetoInts = [int(a) for a in calibrationPatternSizetoList]
+    calibrationPatternSizeTuple = tuple(calibrationPatternSizetoInts,)
+    return calibrationPatternSizeTuple
+
 def main():
-    args = parse_args()
+    args = parse_args()    
+
+    #Calibration Inputs
     CameraMakeAndModel = args['CameraMakeAndModel']
+    CalibrationPatternSize = getCalibrationPatternSizeTuple(args['CalibrationPatternSize'])
     argCalibrationPhotoDir = None if args['CalibrationPhotoDir'].lower()=='none' else args['CalibrationPhotoDir']
     CalibrationPhotoDir = getCalibrationPhotoDir(CameraMakeAndModel, argCalibrationPhotoDir)
     CalibrationFilePath = getCalibrationFileLocation(CameraMakeAndModel)
+    
+    #Testing Calibration Inputs
+    CALIBRATION_FILE = args['CalibrationFile']
+    COMPARISON_IMAGE = args['ImageComparisonPath']
+
+
     echoArgs(args)
 
     if args['Mode'] == "1":
-        if not checkForExistingCalibrationPhotoDirs(CameraMakeAndModel):
-            captureFrames(args['StreamSrc'], CalibrationPhotoDir)
-        else:
-            logging.error("""Directory exists for specified CameraMakeAndModel or CalibrationPhotoDir . 
-            Please provide a unique instance of the make and model you are attempting to calibrate or use one of the existing calibration files.
-            Otherwise, delete the existing calibration photo directory, then try your capture images attempt again.""")
-            sys.exit(1)
-        
+        makeDirIfNotExistingCalibrationPhotoDirs(CameraMakeAndModel)
+        captureFrames(args['StreamSrc'], CalibrationPhotoDir)
     elif args['Mode'] == "2":
         if not checkForExistingCalibrationFile(CameraMakeAndModel):
-            calibrate(CameraMakeAndModel, CalibrationFilePath, CalibrationPhotoDir)
+            calibrate(CameraMakeAndModel, CalibrationFilePath, CalibrationPhotoDir, CalibrationPatternSize)
         else:
             logging.error("""Calibration file exists for file {}. 
             Please delete or move this file before attempting recalibration or else provide a different, unique CameraMakeAndModel.""".format(CalibrationFilePath))
             sys.exit(1)
+
+    elif args['Mode'] == "3":        
+        COMPARE = ImageComparison(CALIBRATION_FILE, COMPARISON_IMAGE)
+        COMPARE.showComparison()
     else:
         logging.warning("No valid mode provided. Please provide a mode of 1 (capture images) or 2 (calibrate camera)")
         sys.exit(0)    
