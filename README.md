@@ -9,7 +9,8 @@ You may have to  manually install some libraries using pip install [module-name]
     	"StreamSrc": "ProvideLinkToStream",
     	"CameraMakeAndModel": "ProvideCameraMakeAndModel",
     	"CalibrationPhotoDir": "None",
-    	"Mode": "[1, 2, or 3]"
+		"CalibrationPatternSize": "(4,11)",
+    	"Mode": "[1, 2, or 3]",
 		"CalibrationFile": "Provide the name of the calibration file under /data/CalibrationFiles",
     	"ImageComparisonPath": "Provide the relative path to the project root to the image you want to compare between the original and undistorted images"
 	}```
@@ -18,6 +19,7 @@ You may have to  manually install some libraries using pip install [module-name]
 
 **CameraMakeAndModel**: Provide a unique make and model for the camera you're calibrating. The idea is for any one camera type, there should only be one calibration unless we install cameras with different focal lengths. If so, provide some uniqueness here such as *Bosch600VR_wide* or *AxisQ3151_longFocal*, etc.
 
+**CalibrationPatternSize**: If using circle grid, found [here](https://docs.opencv.org/2.4/_downloads/acircles_pattern.png), then pattern size is a tuple of "(4,11)" Must be a string in tuple format.
 
 **CalibrationPhotoDir**: Leave this as None if you want the program to create the directory for you in the /data/calibration-photos directory. Otherwise, provide an existing path to the jpeg photos you intend to use for calibration.
 
