@@ -82,6 +82,7 @@ def checkForExistingCalibrationFile(cameraMakeModel):
 
 def captureFrames(streamSrc, calibrationPhotoDir):
     num_seconds = 1
+    was_pressed = False    
     frames_captured = 0
 
     font                   = cv2.FONT_HERSHEY_SIMPLEX
@@ -92,7 +93,7 @@ def captureFrames(streamSrc, calibrationPhotoDir):
     
     streamSrc = PressGToCaptureFrame(streamSrc, calibrationPhotoDir)
     cap = streamSrc.cap.start()
-
+    
     while True:
         frame = cap.read()
         
@@ -103,17 +104,23 @@ def captureFrames(streamSrc, calibrationPhotoDir):
             fontColor,
             lineType)
         
-        resized = imutils.resize(frame,width=640, height=480)
+        #resized = imutils.resize(frame,width=640, height=480)
 
-        cv2.imshow('VIDEO', resized)
+        cv2.imshow('VIDEO', frame)
         num_seconds += 1
         
         if keyboard.is_pressed('g'):
-            streamSrc.saveImg(frame, frames_captured)
-            frames_captured += 1        
+            if not was_pressed:
+                frames_captured += 1
+                sleep(0.1)
+                streamSrc.saveImg(frame, frames_captured)                
+                was_pressed = True
+            else:
+                was_pressed = False        
         if cv2.waitKey(1) & 0xFF == ord('q'):
             cap.closeStream()
             cv2.destroyAllWindows()
+            sys.exit(0)
             break
 
 def calibrate(cameraMakeModel, calibrationFileName, calibrationPhotoDir, CalibrationPatternSize):
@@ -130,7 +137,7 @@ def getCalibrationPatternSizeTuple(calibrationPatternSize):
     return calibrationPatternSizeTuple
 
 def main():
-    args = parse_args()
+    args = parse_args()    
 
     #Calibration Inputs
     CameraMakeAndModel = args['CameraMakeAndModel']

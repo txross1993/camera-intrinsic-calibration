@@ -25,10 +25,10 @@ class VideoFrameUndistorter:
             self.w = w
             self.setNewCameraMtx()
     
-        mapx,mapy = cv2.initUndistortRectifyMap(self.mtx,self.dist,None, self.newcameramtx,(w,h),5)
-        undistorted = cv2.remap(frame,mapx,mapy,cv2.INTER_LINEAR)
+        # mapx,mapy = cv2.initUndistortRectifyMap(self.mtx,self.dist,None, self.newcameramtx,(w,h),5)
+        # undistorted = cv2.remap(frame,mapx,mapy,cv2.INTER_LINEAR)
 
-        #undistorted = cv2.undistort(frame, self.mtx, self.dist, None, self.newcameramtx)
+        undistorted = cv2.undistort(frame, self.mtx, self.dist, None, self.newcameramtx)
         x,y,w,h = self.roi
         undistorted = undistorted[y:y+h, x:x+w]
         return undistorted
