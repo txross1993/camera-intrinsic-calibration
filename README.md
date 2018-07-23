@@ -1,10 +1,17 @@
 # How to use this calibration program
+## Installing requirements
+pip install -r requirements.txt
+
+You may have to  manually install some libraries using pip install <module-name>
+
 ## Supply the config.json file
     ```{
     	"StreamSrc": "ProvideLinkToStream",
     	"CameraMakeAndModel": "ProvideCameraMakeAndModel",
     	"CalibrationPhotoDir": "None",
-    	"Mode": "[1 or 2]"
+    	"Mode": "[1, 2, or 3]"
+		"CalibrationFile": "Provide the name of the calibration file under /data/CalibrationFiles",
+    	"ImageComparisonPath": "Provide the relative path to the project root to the image you want to compare between the original and undistorted images"
 	}```
 
 **StreamSrc**: The source of the stream. Typically 0, 1, or an rtsp link. 0 or 1 refers to the port on your local device for a pibcam or usb integrated camera device. The rtsp format is ```rtsp://<username>:<password>@<uri>```. 
