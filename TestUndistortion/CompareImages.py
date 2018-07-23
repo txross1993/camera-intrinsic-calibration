@@ -9,6 +9,11 @@ class ImageComparison(object):
         self.image = cv2.imread(image)
         self.undistorter = self.setUndistorter()
 
+        print("MTX: {}".format(self.undistorter.mtx))
+        print("DIST: {}".format(self.undistorter.dist))
+        print("Height: {}".format(self.undistorter.h))
+        print("Width: {}".format(self.undistorter.w))
+
     def __getCalibrationMatrix(self, calibrationFile):
         calibration = CameraCalibration(calibrationFile)
         mtx = calibration.mtx

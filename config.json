@@ -5,5 +5,5 @@
     "CalibrationPatternSize": "(4,11)",
     "Mode": "1",
     "CalibrationFile": "logi.calibration.file",
-    "ImageComparisonPath": "data/calibrationPictures/logi/chessboard_15.jpeg"
+    "ImageComparisonPath": "data/calibrationPictures/logi/chessboard_2.jpeg"
 }

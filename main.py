@@ -65,7 +65,7 @@ def getCalibrationFileLocation(cameraMakeModel):
     return calibrationFile
 
 
-def checkForExistingCalibrationPhotoDirs(cameraMakeModel):
+def makeDirIfNotExistingCalibrationPhotoDirs(cameraMakeModel):
     photoDir = getCalibrationPhotoDir(cameraMakeModel)
     if os.path.isdir(photoDir):
         return True
@@ -107,6 +107,7 @@ def captureFrames(streamSrc, calibrationPhotoDir):
         #resized = imutils.resize(frame,width=640, height=480)
 
         cv2.imshow('VIDEO', frame)
+        key = cv2.waitKey(1) & 0xFF
         num_seconds += 1
         
         if keyboard.is_pressed('g'):
@@ -117,11 +118,11 @@ def captureFrames(streamSrc, calibrationPhotoDir):
                 was_pressed = True
             else:
                 was_pressed = False        
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            cap.closeStream()
-            cv2.destroyAllWindows()
-            sys.exit(0)
+        if key == ord('q'):
             break
+
+    cap.closeStream()
+    cv2.destroyAllWindows()
 
 def calibrate(cameraMakeModel, calibrationFileName, calibrationPhotoDir, CalibrationPatternSize):
     Calibrator(cameraMakeModel, calibrationFileName, calibrationPhotoDir, CalibrationPatternSize).calibrate()
@@ -154,14 +155,8 @@ def main():
     echoArgs(args)
 
     if args['Mode'] == "1":
-        if not checkForExistingCalibrationPhotoDirs(CameraMakeAndModel):
-            captureFrames(args['StreamSrc'], CalibrationPhotoDir)
-        else:
-            logging.error("""Directory exists for specified CameraMakeAndModel or CalibrationPhotoDir . 
-            Please provide a unique instance of the make and model you are attempting to calibrate or use one of the existing calibration files.
-            Otherwise, delete the existing calibration photo directory, then try your capture images attempt again.""")
-            sys.exit(1)
-        
+        makeDirIfNotExistingCalibrationPhotoDirs(CameraMakeAndModel)
+        captureFrames(args['StreamSrc'], CalibrationPhotoDir)
     elif args['Mode'] == "2":
         if not checkForExistingCalibrationFile(CameraMakeAndModel):
             calibrate(CameraMakeAndModel, CalibrationFilePath, CalibrationPhotoDir, CalibrationPatternSize)
