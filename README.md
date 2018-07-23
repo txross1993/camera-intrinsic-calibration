@@ -28,3 +28,7 @@ You may have to  manually install some libraries using pip install [module-name]
 **Mode 2**: Run calibration. Output pickeled calibration file will be located at data/calibration-files/<CameraMakeAndModel>.calibration.file.
 
 **Mode 3**: Test calibration undistortion output. Provide the path to the image you want to test the undistortion on in ImageComparisonPath and the name of the calibration file located in /data/calibrationFiles.
+
+**CalibrationFile**: If in mode 3, provide the **name** of the calibration file, which must be located in the relative path to root dir, /data/calibrationFiles/<yourCalibrationFileName>.
+
+**ImageComparisonPath**: Provide the full or relative path to the root directory to the image you wish to see in its original format compared to its undistorted format, use this in mode 3 to validate your calibration matrix.
