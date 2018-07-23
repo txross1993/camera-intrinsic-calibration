@@ -2,7 +2,7 @@
 ## Installing requirements
 pip install -r requirements.txt
 
-You may have to  manually install some libraries using pip install <module-name>
+You may have to  manually install some libraries using pip install [module-name]
 
 ## Supply the config.json file
     ```{
