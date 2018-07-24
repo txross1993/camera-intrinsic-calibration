@@ -86,7 +86,6 @@ def captureFrames(streamSrc, calibrationPhotoDir):
     frames_captured = 0
 
     font                   = cv2.FONT_HERSHEY_SIMPLEX
-    topLeftCorner          = (30,30)
     fontScale              = 2
     fontColor              = (0,0,255)
     lineType               = 3
@@ -96,9 +95,9 @@ def captureFrames(streamSrc, calibrationPhotoDir):
     
     while True:
         frame = cap.read()
-        
+
         cv2.putText(frame,'{}'.format(str(frames_captured)), 
-            bottomLeftCornerOfText, 
+            cap.topLeftCorner, 
             font, 
             fontScale,
             fontColor,
