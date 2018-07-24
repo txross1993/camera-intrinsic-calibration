@@ -17,6 +17,12 @@ class videoStream:
         self.stopped = False
         self.setStream()
         (self.grabbed, self.frame) = self.stream.read()
+        self.h, self.w = self.get_FrameHeightWidth(self.frame)
+        self.topLeftCorner          = (int(self.w*0.05),int(self.h*0.1))
+        self.horizontalTopLine      = [(0,int(self.h*0.33)),(self.w, int(self.h*0.33))]
+        self.horizontalBottomLine   = [(0,int(self.h*0.67)), (self.w, int(self.h*0.67))]
+        self.verticalLeftLine       = [(int(self.w*0.33), 0), (int(self.w*0.33), self.h)]
+        self.verticalRightLine      = [(int(self.w*0.67), 0), (int(self.w*0.67), self.h)]
         
     def setStream(self):
         cap = cv2.VideoCapture(self.src)
@@ -25,7 +31,11 @@ class videoStream:
         else:
             logging.ERROR("""Video capture failed to open. \n
                           Please check connectivity and authentication parameters for device stream""")
-            
+
+    def get_FrameHeightWidth(self, frame):
+        frame_h, frame_w = frame.shape[:2]
+        return frame_h, frame_w
+
     def start(self):
         Thread(target=self.update, args=()).start()
         return self

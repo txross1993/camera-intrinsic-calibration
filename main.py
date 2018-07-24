@@ -86,7 +86,6 @@ def captureFrames(streamSrc, calibrationPhotoDir):
     frames_captured = 0
 
     font                   = cv2.FONT_HERSHEY_SIMPLEX
-    bottomLeftCornerOfText = (30,30)
     fontScale              = 2
     fontColor              = (0,0,255)
     lineType               = 3
@@ -96,15 +95,15 @@ def captureFrames(streamSrc, calibrationPhotoDir):
     
     while True:
         frame = cap.read()
-        
-        cv2.putText(frame,'{}'.format(str(frames_captured)), 
-            bottomLeftCornerOfText, 
-            font, 
-            fontScale,
-            fontColor,
-            lineType)
-        
-        resized = imutils.resize(frame,width=640, height=480)
+        displayedFrame = cap.read()
+
+        cv2.putText(displayedFrame,'{}'.format(str(frames_captured)), cap.topLeftCorner, font, fontScale,fontColor,lineType)
+        cv2.line(displayedFrame,cap.horizontalTopLine[0], cap.horizontalTopLine[1],fontColor,lineType)
+        cv2.line(displayedFrame,cap.horizontalBottomLine[0], cap.horizontalBottomLine[1],fontColor,lineType)
+        cv2.line(displayedFrame,cap.verticalLeftLine[0], cap.verticalLeftLine[1],fontColor,lineType)
+        cv2.line(displayedFrame,cap.verticalRightLine[0], cap.verticalRightLine[1],fontColor,lineType)
+
+        resized = imutils.resize(displayedFrame,width=640, height=480)
 
         cv2.imshow('VIDEO', resized)
         key = cv2.waitKey(1) & 0xFF
