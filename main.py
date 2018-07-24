@@ -95,15 +95,15 @@ def captureFrames(streamSrc, calibrationPhotoDir):
     
     while True:
         frame = cap.read()
+        displayedFrame = cap.read()
 
-        cv2.putText(frame,'{}'.format(str(frames_captured)), 
-            cap.topLeftCorner, 
-            font, 
-            fontScale,
-            fontColor,
-            lineType)
-        
-        resized = imutils.resize(frame,width=640, height=480)
+        cv2.putText(displayedFrame,'{}'.format(str(frames_captured)), cap.topLeftCorner, font, fontScale,fontColor,lineType)
+        cv2.line(displayedFrame,cap.horizontalTopLine[0], cap.horizontalTopLine[1],fontColor,lineType)
+        cv2.line(displayedFrame,cap.horizontalBottomLine[0], cap.horizontalBottomLine[1],fontColor,lineType)
+        cv2.line(displayedFrame,cap.verticalLeftLine[0], cap.verticalLeftLine[1],fontColor,lineType)
+        cv2.line(displayedFrame,cap.verticalRightLine[0], cap.verticalRightLine[1],fontColor,lineType)
+
+        resized = imutils.resize(displayedFrame,width=640, height=480)
 
         cv2.imshow('VIDEO', resized)
         key = cv2.waitKey(1) & 0xFF
