@@ -1,9 +1,9 @@
 {
     "StreamSrc": "rtsp://root:etech2018*$@10.19.1.55/axis-media/media.amp?camera=2",
-    "CameraMakeAndModel": "axis.FA54.camera2",
+    "CameraMakeAndModel": "axis.fa54Camera2",
     "CalibrationPhotoDir": "None",
     "CalibrationPatternSize": "(4,11)",
     "Mode": "1",
-    "CalibrationFile": "axis.FA54.camera2.calibration.file",
-    "ImageComparisonPath": "data/calibrationPictures/axis.FA54.camera2/chessboard_2.jpeg"
+    "CalibrationFile": "axis.fa54Camera2.calibration.file",
+    "ImageComparisonPath": "data/calibrationPictures/axis.fa54Camera2/chessboard_2.jpeg"
 }
