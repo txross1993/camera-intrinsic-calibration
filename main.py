@@ -104,9 +104,9 @@ def captureFrames(streamSrc, calibrationPhotoDir):
             fontColor,
             lineType)
         
-        #resized = imutils.resize(frame,width=640, height=480)
+        resized = imutils.resize(frame,width=640, height=480)
 
-        cv2.imshow('VIDEO', frame)
+        cv2.imshow('VIDEO', resized)
         key = cv2.waitKey(1) & 0xFF
         num_seconds += 1
         
