@@ -1,9 +1,9 @@
 {
-    "StreamSrc": "rtsp://root:etech2018*$@10.19.1.55/axis-media/media.amp?camera=2",
-    "CameraMakeAndModel": "axis.fa54Camera2",
+    "StreamSrc": "rtsp://live:etech2018*$@10.19.1.56:554?line=2",
+    "CameraMakeAndModel": "bosch.panoramic7000",
     "CalibrationPhotoDir": "None",
     "CalibrationPatternSize": "(4,11)",
-    "Mode": "1",
-    "CalibrationFile": "axis.fa54Camera2.calibration.file",
-    "ImageComparisonPath": "data/calibrationPictures/axis.fa54Camera2/chessboard_2.jpeg"
+    "Mode": "3",
+    "CalibrationFile": "bosch.panoramic7000.calibration.file",
+    "ImageComparisonPath": "data/calibrationPictures/bosch.panoramic7000/chessboard_2.jpeg"
 }

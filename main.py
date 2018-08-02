@@ -95,7 +95,7 @@ def captureFrames(streamSrc, calibrationPhotoDir):
     
     while True:
         frame = cap.read()
-        displayedFrame = cap.read()
+        displayedFrame = frame.copy()
 
         cv2.putText(displayedFrame,'{}'.format(str(frames_captured)), cap.topLeftCorner, font, fontScale,fontColor,lineType)
         cv2.line(displayedFrame,cap.horizontalTopLine[0], cap.horizontalTopLine[1],fontColor,lineType)
