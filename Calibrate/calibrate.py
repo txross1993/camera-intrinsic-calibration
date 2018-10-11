@@ -38,7 +38,7 @@ class Calibrator(object):
             shape = gray.shape[::-1]
 
             # Find the chess board corners
-            ret, cirlces = cv2.findCirclesGrid(gray, patternSize=self.calibrationPatternSize, flags=cv2.CALIB_CB_ASYMMETRIC_GRID)
+            ret, cirlces = cv2.findCirclesGrid(gray, patternSize=self.calibrationPatternSize, flags=cv2.CALIB_CB_ASYMMETRIC_GRID+cv2.CALIB_CB_ADAPTIVE_THRESH+cv2.CALIB_CB_NORMALIZE_IMAGE)
             #+cv2.CALIB_CB_ADAPTIVE_THRESH+cv2.CALIB_CB_NORMALIZE_IMAGE
             
             # If found, add object points, image points (after refining them)

@@ -1,9 +1,9 @@
 {
-    "StreamSrc": "rtsp://live:etech2018*$@10.19.1.56:554?line=2",
-    "CameraMakeAndModel": "bosch.panoramic7000",
+    "StreamSrc": "rtsp://root:e=)R3T#y-Qol@10.209.46.200/axis-media/media.amp?camera=1",
+    "CameraMakeAndModel": "Q3518.ACCC8EA1C1AE",
     "CalibrationPhotoDir": "None",
     "CalibrationPatternSize": "(4,11)",
     "Mode": "3",
-    "CalibrationFile": "bosch.panoramic7000.calibration.file",
-    "ImageComparisonPath": "data/calibrationPictures/bosch.panoramic7000/chessboard_2.jpeg"
+    "CalibrationFile": "Q3518.ACCC8EA1C1AE.calibration.file",
+    "ImageComparisonPath": "data/calibrationPictures/Q3518.ACCC8EA1C1AE/chessboard_2.jpeg"
 }
