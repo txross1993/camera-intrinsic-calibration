@@ -1,5 +1,5 @@
 {
-    "StreamSrc": "rtsp://root:e=)R3T#y-Qol@10.209.46.200/axis-media/media.amp?camera=1",
+    "StreamSrc": "rtsp://root:[REDACTED_PASSWORD]@[REDACTED_IP_ADDRESS]/axis-media/media.amp?camera=1",
     "CameraMakeAndModel": "Q3518.ACCC8EA1C1AE",
     "CalibrationPhotoDir": "None",
     "CalibrationPatternSize": "(4,11)",
