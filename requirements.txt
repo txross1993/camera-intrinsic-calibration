@@ -1,4 +1,4 @@
 keyboard==0.13.2
-numpy==1.14.2
+numpy==1.22.0
 imutils==0.4.6
 opencv_python==3.4.1.15
